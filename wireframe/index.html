@@ -1,0 +1,833 @@
+<title>Centennial CDL School Wireframe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Overpass:wght@600;800&display=swap">
+<style>
+/* Layout: documentary, photo-led, left-aligned. Real photos carry the page; one sticky walkaround stage is the signature;
+   highway guide-sign green appears only on the route-to-CDL markers. Wireframe notes are yellow and can be hidden. */
+:root {
+  --bg: #ECEEEE;          /* concrete, slightly cool */
+  --surface: #F8F9F9;
+  --ink: #15191C;
+  --muted: #545E66;
+  --line: #C6CDD0;
+  --red: #C21F2B;         /* placeholder: replace with Centennial's exact red */
+  --red-ink: #FFFFFF;
+  --sign: #0B6B45;        /* US guide-sign green, route markers only */
+  --sign-ink: #FFFFFF;
+  --road: #2A3035;
+  --hatch-a: #D9DEDF;
+  --hatch-b: #E3E7E8;
+  --tbd-bg: rgba(194, 31, 43, 0.09);
+  --note-bg: #FFF4C7;
+  --note-ink: #463800;
+  --note-line: #E2C451;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --sign-font: "Overpass", "Helvetica Neue", Arial, sans-serif;
+  --measure: 62ch;
+  --wrap: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111416; --surface: #181D20; --ink: #E7EBEC; --muted: #9CA6AC; --line: #2D353A;
+    --red: #E2404C; --red-ink: #FFFFFF; --sign: #13824F; --sign-ink: #FFFFFF; --road: #0A0C0D;
+    --hatch-a: #1E2428; --hatch-b: #242B30; --tbd-bg: rgba(226, 64, 76, 0.16);
+    --note-bg: #3A3210; --note-ink: #F5E7A8; --note-line: #7A6620;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111416; --surface: #181D20; --ink: #E7EBEC; --muted: #9CA6AC; --line: #2D353A;
+  --red: #E2404C; --red-ink: #FFFFFF; --sign: #13824F; --sign-ink: #FFFFFF; --road: #0A0C0D;
+  --hatch-a: #1E2428; --hatch-b: #242B30; --tbd-bg: rgba(226, 64, 76, 0.16);
+  --note-bg: #3A3210; --note-ink: #F5E7A8; --note-line: #7A6620;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.6;
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.wrap {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+
+h1, h2, h3 { font-family: var(--display); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.5rem, 6vw, 4.6rem); font-weight: 760; font-stretch: 72%; font-variation-settings: "wdth" 72; }
+h2 { font-size: clamp(2rem, 4.4vw, 3.3rem); font-weight: 720; font-stretch: 75%; font-variation-settings: "wdth" 75; }
+h3 { font-size: 1.3rem; font-weight: 650; line-height: 1.2; }
+p { margin: 0; max-width: var(--measure); text-wrap: pretty; }
+.lede { font-size: 1.2rem; line-height: 1.5; color: var(--ink); }
+.muted { color: var(--muted); }
+.tbd { background: var(--tbd-bg); border-bottom: 1px dashed var(--red); padding: 0 .2em; border-radius: 2px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  min-height: 48px; padding: .7em 1.3em; border-radius: 4px;
+  font: 650 1rem/1 var(--body); text-decoration: none; cursor: pointer; border: 2px solid transparent;
+}
+.btn-primary { background: var(--red); color: var(--red-ink); }
+.btn-primary:hover { filter: brightness(0.92); }
+.btn-quiet { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-quiet:hover { background: var(--ink); color: var(--bg); }
+
+/* Wireframe chrome */
+.wf-bar { background: var(--ink); color: var(--bg); font-size: .85rem; }
+.wf-bar .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; justify-content: space-between; padding-block: 8px; }
+.wf-bar label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
+.wf-bar nav { display: flex; gap: 14px; flex-wrap: wrap; }
+.wf-bar nav a { text-decoration: none; opacity: .75; }
+.wf-bar nav a[aria-current="page"] { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+.note {
+  background: var(--note-bg); color: var(--note-ink); border: 1px solid var(--note-line);
+  font-size: .88rem; line-height: 1.45; padding: 10px 14px; max-width: var(--measure); border-radius: 2px;
+}
+.note strong { font-weight: 700; }
+body.notes-off .note { display: none; }
+
+/* Header */
+.site-head { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface); }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { text-decoration: none; display: flex; flex-direction: column; line-height: 1; }
+.brand b { font-family: var(--display); font-weight: 780; font-size: 1.35rem; font-variation-settings: "wdth" 70; letter-spacing: .01em; }
+.brand span { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+.mainnav { display: none; gap: 22px; font-size: .95rem; }
+.mainnav a { text-decoration: none; color: var(--muted); }
+.mainnav a:hover { color: var(--ink); }
+.head-actions { display: flex; align-items: center; gap: 14px; }
+.head-phone { display: none; font-weight: 650; font-variant-numeric: tabular-nums; }
+.head-actions .btn { min-height: 42px; padding: .55em 1em; }
+@media (min-width: 900px) { .mainnav { display: flex; } .head-phone { display: inline; } }
+
+/* Photo placeholders: hatched, captioned with the shot to capture */
+.ph {
+  position: relative; width: 100%; max-width: 100%; overflow: hidden; border-radius: 2px;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), var(--line) 50%, transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), var(--line) 50%, transparent calc(50% + 1px)),
+    var(--hatch-a);
+  display: flex; align-items: flex-end;
+}
+.ph figcaption, .ph .cap {
+  font-size: .8rem; line-height: 1.35; color: var(--muted); background: var(--surface);
+  margin: 10px; padding: 6px 9px; max-width: 34ch; border-radius: 2px;
+}
+.ph .cap b { color: var(--ink); font-weight: 650; }
+
+section { padding-block: clamp(56px, 8vw, 104px); }
+.stack { display: grid; gap: 14px; }
+.stack > h2 + *, .stack > h3 + * { margin-top: -4px; }
+.stack-lg { display: grid; gap: 32px; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* Hero */
+.hero { padding-block: clamp(32px, 5vw, 64px) clamp(40px, 6vw, 80px); }
+.hero-grid { display: grid; gap: 32px; align-items: end; }
+@media (min-width: 900px) { .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 56px; } }
+.hero .ph { aspect-ratio: 4 / 5; }
+@media (max-width: 899px) { .hero .ph { aspect-ratio: 4 / 3; } }
+.price-line { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; font-size: 1.05rem; }
+.price-line .price { font-family: var(--display); font-size: 2.1rem; font-weight: 720; font-variation-settings: "wdth" 80; font-variant-numeric: tabular-nums; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); margin-top: 8px; }
+@media (min-width: 720px) { .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.facts div { padding: 14px 14px 14px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.facts dt { font-size: .82rem; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-weight: 650; }
+
+/* Backed-by band */
+.backed { background: var(--surface); border-block: 1px solid var(--line); }
+.backed-grid { display: grid; gap: 32px; }
+@media (min-width: 900px) { .backed-grid { grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; } }
+.jobs { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 24px; font-size: .95rem; }
+.jobs li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--line); }
+
+/* Walkaround (signature moment) */
+.walk-grid { display: grid; gap: 32px; }
+@media (min-width: 900px) { .walk-grid { grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: start; } }
+.walk-stage { display: none; }
+@media (min-width: 900px) {
+  .walk-stage { display: block; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 92px); }
+  .walk-stage .ph { aspect-ratio: 4 / 3; }
+  .walk-step .ph { display: none; }
+  .walk-step { min-height: 46vh; }
+}
+.walk-meter { display: flex; gap: 4px; margin-top: 12px; }
+.walk-meter i { flex: 1; height: 4px; background: var(--line); border-radius: 2px; transition: background .25s ease-out; }
+.walk-meter i.on { background: var(--red); }
+.walk-list { list-style: none; margin: 0; padding: 0; }
+.walk-step { display: grid; gap: 10px; padding: 22px 0; border-top: 1px solid var(--line); align-content: start; }
+.walk-step .ph { aspect-ratio: 16 / 10; margin-bottom: 4px; }
+.walk-step ul { margin: 0; padding-left: 1.1em; }
+.walk-step.is-current h3 { color: var(--red); }
+
+/* Programs list (home) */
+.prog-list { display: grid; border-top: 2px solid var(--ink); }
+.prog-row { display: grid; gap: 6px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+@media (min-width: 820px) { .prog-row { grid-template-columns: 1.3fr 1.6fr .7fr .6fr auto; } }
+.prog-row h3 { font-size: 1.35rem; }
+.prog-row .num { font-variant-numeric: tabular-nums; font-weight: 650; }
+.prog-row a.more { font-weight: 650; text-underline-offset: 3px; }
+
+/* Route to CDL: guide-sign markers */
+.route { position: relative; margin-top: 28px; }
+.route ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.route li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; position: relative; padding-bottom: 26px; }
+.route li::before { content: ""; position: absolute; left: 31px; top: 0; bottom: 0; width: 2px; background: var(--road); }
+.route li:last-child::before { bottom: auto; height: 40px; }
+.marker {
+  position: relative; z-index: 1; width: 52px; height: 74px; margin-left: 6px; border-radius: 5px;
+  background: var(--sign); color: var(--sign-ink); box-shadow: inset 0 0 0 2px var(--sign), inset 0 0 0 4px var(--sign-ink);
+  display: grid; place-content: center; text-align: center; font-family: var(--sign-font); line-height: 1;
+}
+.marker small { font-size: .62rem; font-weight: 800; letter-spacing: .06em; }
+.marker b { font-size: 1.7rem; font-weight: 800; margin-top: 3px; }
+.route h3 { font-size: 1.15rem; margin-top: 4px; }
+.route p { font-size: .95rem; color: var(--muted); }
+.route .dur { font-size: .85rem; font-weight: 650; color: var(--ink); margin-top: 4px; }
+@media (min-width: 980px) {
+  .route ol { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px; }
+  .route li { grid-template-columns: 1fr; padding-bottom: 0; gap: 12px; }
+  .route li::before { display: none; }
+  .route::before { content: ""; position: absolute; left: 0; right: 0; top: 30px; height: 14px; background: var(--road);
+    background-image: linear-gradient(90deg, #E9C547 0 26px, transparent 26px 52px); background-size: 52px 2px; background-repeat: repeat-x; background-position: 0 6px; border-radius: 2px; }
+  .marker { margin-left: 0; }
+}
+
+/* Instructors */
+.people { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.person .ph { aspect-ratio: 3 / 4; margin-bottom: 12px; }
+.person p { font-size: .95rem; }
+
+/* Cost & funding */
+.two { display: grid; gap: 40px; }
+@media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+.checks { list-style: none; padding: 0; margin: 0; }
+.checks li { padding: 10px 0 10px 28px; border-bottom: 1px solid var(--line); position: relative; }
+.checks li::before { content: ""; position: absolute; left: 2px; top: 17px; width: 12px; height: 7px; border-left: 2px solid var(--sign); border-bottom: 2px solid var(--sign); transform: rotate(-45deg); }
+.fund dt { font-weight: 650; margin-top: 16px; }
+.fund dd { margin: 4px 0 0; color: var(--muted); max-width: var(--measure); }
+
+/* Reviews */
+.reviews { display: grid; gap: 28px; }
+@media (min-width: 820px) { .reviews { grid-template-columns: 1fr 1fr; gap: 48px; } }
+blockquote { margin: 0; font-size: 1.25rem; line-height: 1.45; }
+blockquote footer { font-size: .9rem; color: var(--muted); margin-top: 10px; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.faq summary { cursor: pointer; font-weight: 650; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-weight: 400; font-size: 1.4rem; line-height: 1; color: var(--muted); }
+.faq details[open] summary::after { content: "\2212"; }
+.faq details p { margin-top: 10px; color: var(--muted); }
+
+/* Form */
+.form-band { background: var(--surface); border-top: 1px solid var(--line); }
+.form-grid { display: grid; gap: 40px; }
+@media (min-width: 900px) { .form-grid { grid-template-columns: .9fr 1.1fr; gap: 64px; } }
+form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-weight: 650; font-size: .92rem; }
+.field input, .field select {
+  font: 400 1rem/1.3 var(--body); color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 4px; padding: 12px; min-height: 48px; width: 100%;
+}
+.field input:focus, .field select:focus { border-color: var(--ink); outline: 2px solid var(--ink); outline-offset: 0; }
+.row2 { display: grid; gap: 16px; }
+@media (min-width: 560px) { .row2 { grid-template-columns: 1fr 1fr; } }
+.consent { display: grid; grid-template-columns: auto 1fr; gap: 10px; font-size: .85rem; color: var(--muted); align-items: start; }
+.consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--red); }
+.form-done { border: 1px solid var(--line); border-top: 3px solid var(--sign); padding: 16px 18px; background: var(--bg); border-radius: 2px; }
+.next-steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.next-steps li { counter-increment: s; padding: 12px 0 12px 40px; border-bottom: 1px solid var(--line); position: relative; }
+.next-steps li::before { content: counter(s); position: absolute; left: 0; top: 11px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-content: center; font-size: .8rem; font-weight: 700; }
+
+/* Programs page */
+.crumb { font-size: .9rem; color: var(--muted); }
+.spec { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+@media (min-width: 820px) { .spec { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.spec div { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.spec dt { font-size: .82rem; color: var(--muted); }
+.spec dd { margin: 4px 0 0; font-family: var(--display); font-size: 1.5rem; font-weight: 700; font-variation-settings: "wdth" 80; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--line); }
+th { font-size: .82rem; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--ink); }
+
+/* Footer */
+.site-foot { background: var(--road); color: #DDE3E5; padding-block: 48px 120px; font-size: .92rem; }
+@media (min-width: 900px) { .site-foot { padding-block: 56px; } }
+.site-foot .wrap { display: grid; gap: 28px; }
+@media (min-width: 820px) { .site-foot .wrap { grid-template-columns: 1.3fr 1fr 1fr; } }
+.site-foot h3 { color: #FFFFFF; font-size: 1rem; margin-bottom: 8px; }
+.site-foot p { color: #B9C2C6; }
+.site-foot a { color: #DDE3E5; }
+
+/* Mobile action bar */
+.mobile-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+}
+@media (min-width: 900px) { .mobile-bar { display: none; } }
+
+[data-view][hidden] { display: none !important; }
+</style>
+
+<div class="wf-bar">
+  <div class="wrap">
+    <span>Wireframe v1, Nov 2026. Placeholder photos, prices and dates.</span>
+    <nav aria-label="Wireframe pages">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#programs" data-nav="programs">Class A program</a>
+      <a href="#apply" data-nav="apply">Request info</a>
+    </nav>
+    <label for="notes-toggle"><input type="checkbox" id="notes-toggle" checked> Show notes</label>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Home">
+      <b>Centennial CDL</b>
+      <span>Truck driving school, Lindon, Utah</span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <a href="#programs">Programs</a>
+      <a href="#walkaround">The training</a>
+      <a href="#cost">Cost and funding</a>
+      <a href="#instructors">Instructors</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="head-actions">
+      <span class="head-phone"><span class="tbd">(801) 000-0000</span></span>
+      <a class="btn btn-primary" href="#apply">Request info</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HOME ===================== -->
+<main id="view-home" data-view="home">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="stack-lg">
+        <aside class="note"><strong>Note:</strong> School name is a placeholder until the client confirms it. The client asked for a site separate from centennialtrucking.com; confirm whether we may name the parent company at all.</aside>
+        <h1>Get your Class A CDL in Lindon.</h1>
+        <p class="lede">Train on a working trucking company's yard, with small classes and instructors who still drive. Day and evening classes. New classes start every <span class="tbd">X weeks</span>.</p>
+        <div class="price-line">
+          <span class="price"><span class="tbd">$X,XXX</span></span>
+          <span class="muted">Class A tuition. Payment plans and Workforce Services funding available <span class="tbd">confirm</span>.</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#apply">Request info</a>
+          <a class="btn btn-quiet" href="#programs">See the Class A program</a>
+        </div>
+        <dl class="facts">
+          <div><dt>Next class starts</dt><dd><span class="tbd">Mon, Jan 5</span></dd></div>
+          <div><dt>Program length</dt><dd><span class="tbd">X weeks</span></dd></div>
+          <div><dt>Class size</dt><dd><span class="tbd">X students</span></dd></div>
+          <div><dt>FMCSA registry</dt><dd><span class="tbd">Listed</span></dd></div>
+        </dl>
+      </div>
+      <figure class="ph" style="margin:0">
+        <figcaption><b>Shot 1.</b> Instructor and student at the open cab door, early light, the yard and mountains behind. Real people, not posed at the camera.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="backed" aria-labelledby="backed-h">
+    <div class="wrap backed-grid">
+      <div class="stack">
+        <h2 id="backed-h">Learn from a company that hauls for a living.</h2>
+        <p>Centennial Trucking moves material for highway, airport and mine work across the West. The school runs on the same yard, with the same safety standards their own drivers follow.</p>
+        <p class="muted">Woman-owned. DBE, WBE and WOSB certified.</p>
+        <aside class="note"><strong>Note:</strong> This band is the strongest thing a competitor can't copy. If the client doesn't want the companies tied together, this becomes "Built by working drivers" and loses the project list.</aside>
+      </div>
+      <div class="stack">
+        <p class="muted">Recent Centennial projects</p>
+        <ul class="jobs">
+          <li>Salt Lake City International Airport</li>
+          <li>I-15 Corridor</li>
+          <li>Mountain View Corridor</li>
+          <li>Bangerter Highway</li>
+          <li>Hill Air Force Base</li>
+          <li>Provo Airport</li>
+          <li>I-215</li>
+          <li>Rio Tinto mine</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="walkaround" aria-labelledby="walk-h">
+    <div class="wrap stack-lg">
+      <div class="stack">
+        <h2 id="walk-h">Walk around the truck you'll test in.</h2>
+        <p class="lede">Every CDL skills test starts with a pre-trip inspection. Here's what you'll learn to check, and where.</p>
+        <aside class="note"><strong>Signature moment.</strong> On desktop the photo on the left stays put and changes as you scroll the checklist: 8 real photos of their training truck from 8 angles, one shoot. On phones each step shows its own photo, no scroll tricks. Replaces the AI-video idea. A 3D render can drop into the same slot later.</aside>
+      </div>
+      <div class="walk-grid">
+        <div class="walk-stage" aria-hidden="true">
+          <div class="ph" id="walk-frame">
+            <div class="cap" id="walk-cap"><b>Frame 1 of 8.</b> Front of the tractor, straight on, headlights on.</div>
+          </div>
+          <div class="walk-meter" id="walk-meter"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <ol class="walk-list" id="walk-list">
+          <li class="walk-step is-current" data-cap="Front of the tractor, straight on, headlights on.">
+            <div class="ph"><div class="cap"><b>Frame 1.</b> Front of the tractor, straight on, headlights on.</div></div>
+            <h3>Front of the tractor</h3>
+            <p class="muted">Lights, reflectors and steering.</p>
+            <ul><li>Headlights, clearance lights, turn signals</li><li>Steering box, linkage, no loose parts</li><li>Windshield and wipers</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Hood tilted open, engine bay from the driver's side.">
+            <div class="ph"><div class="cap"><b>Frame 2.</b> Hood tilted open, engine bay from the driver's side.</div></div>
+            <h3>Engine compartment</h3>
+            <p class="muted">Fluids, belts and hoses.</p>
+            <ul><li>Oil, coolant and power steering levels</li><li>Belt tension and wear</li><li>Hoses for leaks and cracks</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Low angle on the front steer tire and brake chamber.">
+            <div class="ph"><div class="cap"><b>Frame 3.</b> Low angle on the front steer tire and brake chamber.</div></div>
+            <h3>Steer axle</h3>
+            <p class="muted">Tires, wheels and brakes.</p>
+            <ul><li>Tread depth and inflation</li><li>Lug nuts and hub oil seal</li><li>Brake chamber, hoses, slack adjuster</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Driver's side, fuel tank and steps, mid-body.">
+            <div class="ph"><div class="cap"><b>Frame 4.</b> Driver's side, fuel tank and steps, mid-body.</div></div>
+            <h3>Side of the tractor</h3>
+            <p class="muted">Fuel tank, mirrors and doors.</p>
+            <ul><li>Fuel tank secure, cap tight, no leaks</li><li>Mirrors and brackets</li><li>Steps and hand holds</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Between tractor and trailer: fifth wheel, kingpin, air lines.">
+            <div class="ph"><div class="cap"><b>Frame 5.</b> Between tractor and trailer: fifth wheel, kingpin, air lines.</div></div>
+            <h3>Coupling</h3>
+            <p class="muted">Fifth wheel, kingpin, air and electric lines.</p>
+            <ul><li>Locking jaws closed around the kingpin</li><li>No gap between fifth wheel and trailer apron</li><li>Glad hands sealed, lines not chafing</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Trailer side, landing gear and frame, wide.">
+            <div class="ph"><div class="cap"><b>Frame 6.</b> Trailer side, landing gear and frame, wide.</div></div>
+            <h3>Trailer</h3>
+            <p class="muted">Landing gear, frame and tandems.</p>
+            <ul><li>Landing gear raised, crank secured</li><li>Frame and cross members</li><li>Trailer tires, wheels and brakes</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Rear of the trailer at dusk, lights on.">
+            <div class="ph"><div class="cap"><b>Frame 7.</b> Rear of the trailer at dusk, lights on.</div></div>
+            <h3>Rear of the trailer</h3>
+            <p class="muted">Lights, doors and mud flaps.</p>
+            <ul><li>Brake lights, tail lights, signals</li><li>Doors and hinges latched</li><li>Reflective tape and flaps</li></ul>
+          </li>
+          <li class="walk-step" data-cap="Inside the cab, over the student's shoulder, gauges lit.">
+            <div class="ph"><div class="cap"><b>Frame 8.</b> Inside the cab, over the student's shoulder, gauges lit.</div></div>
+            <h3>In the cab</h3>
+            <p class="muted">Air brake check.</p>
+            <ul><li>Air pressure build-up and leak-down</li><li>Low-air warning and spring brakes</li><li>Gauges, horn, wipers, seat belt</li></ul>
+          </li>
+        </ol>
+      </div>
+      <aside class="note"><strong>Check with an instructor:</strong> inspection items above follow the standard CDL pre-trip; their instructors should confirm wording and order to match how they teach it.</aside>
+    </div>
+  </section>
+
+  <section id="programs-home" aria-labelledby="prog-h" style="padding-top:0">
+    <div class="wrap stack-lg">
+      <div class="stack">
+        <h2 id="prog-h">Programs</h2>
+        <p class="muted">Prices include <span class="tbd">confirm what's included</span>. No hidden testing fees.</p>
+      </div>
+      <div class="prog-list">
+        <div class="prog-row">
+          <h3>Class A CDL</h3>
+          <p class="muted">Tractor-trailers. The license most trucking jobs ask for.</p>
+          <span class="num"><span class="tbd">X weeks</span></span>
+          <span class="num"><span class="tbd">$X,XXX</span></span>
+          <a class="more" href="#programs">Details</a>
+        </div>
+        <div class="prog-row">
+          <h3>Class B CDL</h3>
+          <p class="muted">Dump trucks, box trucks and buses.</p>
+          <span class="num"><span class="tbd">X days</span></span>
+          <span class="num"><span class="tbd">$X,XXX</span></span>
+          <a class="more" href="#programs">Details</a>
+        </div>
+        <div class="prog-row">
+          <h3>Refresher</h3>
+          <p class="muted">For licensed drivers getting back behind the wheel.</p>
+          <span class="num"><span class="tbd">X days</span></span>
+          <span class="num"><span class="tbd">$X,XXX</span></span>
+          <a class="more" href="#programs">Details</a>
+        </div>
+        <div class="prog-row">
+          <h3>Endorsements</h3>
+          <p class="muted">Hazmat, tanker, doubles and triples.</p>
+          <span class="num"><span class="tbd">Varies</span></span>
+          <span class="num"><span class="tbd">$XXX</span></span>
+          <a class="more" href="#programs">Details</a>
+        </div>
+      </div>
+      <aside class="note"><strong>Note:</strong> Prices are shown on purpose. MTECH ($1,820, with a waitlist) and The Trucking School ($4,400, 3 weeks) both publish theirs, and AI search answers quote published prices. Confirm which programs Centennial actually offers.</aside>
+    </div>
+  </section>
+
+  <section id="instructors" style="background:var(--surface); border-block:1px solid var(--line)" aria-labelledby="inst-h">
+    <div class="wrap stack-lg">
+      <div class="stack">
+        <h2 id="inst-h">Your instructors</h2>
+        <p class="lede">You'll spend <span class="tbd">X hours</span> in the cab with one of these people. Here's who they are.</p>
+      </div>
+      <div class="people">
+        <div class="person">
+          <div class="ph"><div class="cap"><b>Shot 9.</b> Instructor portrait at the truck, natural light, work clothes.</div></div>
+          <h3><span class="tbd">Instructor name</span></h3>
+          <p class="muted"><span class="tbd">XX</span> years driving. Former <span class="tbd">route or job</span>.</p>
+          <p>"<span class="tbd">In their own words: why they teach and what they watch for in a new driver.</span>"</p>
+        </div>
+        <div class="person">
+          <div class="ph"><div class="cap"><b>Shot 10.</b> Second instructor, mid-lesson, coaching a backing maneuver.</div></div>
+          <h3><span class="tbd">Instructor name</span></h3>
+          <p class="muted"><span class="tbd">XX</span> years driving.</p>
+          <p>"<span class="tbd">One plain sentence, recorded in a short interview.</span>"</p>
+        </div>
+        <div class="person">
+          <div class="ph"><div class="cap"><b>Shot 11.</b> Third instructor or the school lead, in the classroom.</div></div>
+          <h3><span class="tbd">Instructor name</span></h3>
+          <p class="muted"><span class="tbd">XX</span> years driving.</p>
+          <p>"<span class="tbd">Quote.</span>"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cost" aria-labelledby="cost-h">
+    <div class="wrap stack-lg">
+      <h2 id="cost-h">What it costs, and how people pay for it</h2>
+      <div class="two">
+        <div class="stack">
+          <h3>Included in tuition</h3>
+          <ul class="checks">
+            <li>Classroom training required by the FMCSA (ELDT theory)</li>
+            <li>Range and road hours in the truck you'll test in</li>
+            <li>Use of the truck for your state skills test</li>
+            <li><span class="tbd">DOT physical and drug screen</span></li>
+            <li><span class="tbd">Learner's permit and testing fees</span></li>
+          </ul>
+          <aside class="note"><strong>Confirm every line</strong> with the client. Anything not included gets its own line with a price, so the total is honest.</aside>
+        </div>
+        <div class="stack">
+          <h3>Ways to pay</h3>
+          <dl class="fund">
+            <dt>Payment plan</dt>
+            <dd>Start with a deposit of <span class="tbd">$XXX</span> to hold your seat, then <span class="tbd">terms</span>.</dd>
+            <dt>Utah Department of Workforce Services</dt>
+            <dd>Many students qualify for job-training funds through DWS. We'll help with the paperwork. <span class="tbd">Confirm approval status</span></dd>
+            <dt>Veterans benefits</dt>
+            <dd><span class="tbd">Confirm whether the school is approved for GI Bill.</span></dd>
+            <dt>Employer sponsorship</dt>
+            <dd><span class="tbd">Does Centennial reimburse tuition for graduates it hires?</span></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface); border-block:1px solid var(--line)" aria-labelledby="rev-h">
+    <div class="wrap stack-lg">
+      <h2 id="rev-h">From recent graduates</h2>
+      <div class="reviews">
+        <blockquote>
+          <p>"<span class="tbd">Real Google review, quoted as written, from a named graduate.</span>"</p>
+          <footer><span class="tbd">First name, last initial</span>, Class A, <span class="tbd">month and year</span></footer>
+        </blockquote>
+        <blockquote>
+          <p>"<span class="tbd">Second review. Pick one that mentions an instructor by name or a first job.</span>"</p>
+          <footer><span class="tbd">First name, last initial</span>, now driving for <span class="tbd">company</span></footer>
+        </blockquote>
+      </div>
+      <aside class="note"><strong>Note:</strong> Only real, attributed reviews. If the school is new and has none, this section is cut until it does.</aside>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-h">
+    <div class="wrap two">
+      <div class="stack">
+        <h2 id="faq-h">Questions people ask before they call</h2>
+        <p class="muted">Still unsure? Call or text <span class="tbd">(801) 000-0000</span>.</p>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>How much does CDL school cost?</summary>
+          <p>Class A is <span class="tbd">$X,XXX</span> and includes <span class="tbd">list</span>. Payment plans and Workforce Services funding are available.</p>
+        </details>
+        <details>
+          <summary>How long until I have my license?</summary>
+          <p>Most students test in <span class="tbd">X weeks</span> on the day schedule or <span class="tbd">X weeks</span> on evenings.</p>
+        </details>
+        <details>
+          <summary>Do I need a learner's permit first?</summary>
+          <p>You'll need a commercial learner's permit (CLP) before road training. We walk you through the DOT physical and the permit test in your first week. <span class="tbd">confirm</span></p>
+        </details>
+        <details>
+          <summary>Is the school on the FMCSA Training Provider Registry?</summary>
+          <p>Since 2022, first-time Class A and B drivers must train with a provider on the federal registry. <span class="tbd">Yes, listed as [name], provider ID [#].</span></p>
+        </details>
+        <details>
+          <summary>Can I train while I'm still working?</summary>
+          <p>Yes. Evening classes run <span class="tbd">days and times</span>.</p>
+        </details>
+        <details>
+          <summary>Will you help me find a job?</summary>
+          <p><span class="tbd">Confirm: does Centennial hire graduates, and what do local construction hauling jobs pay?</span></p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-band" id="request" aria-labelledby="req-h">
+    <div class="wrap form-grid">
+      <div class="stack">
+        <h2 id="req-h">Ask about the next class</h2>
+        <p class="lede">Leave your number and someone from the school will call you, usually the same day.</p>
+        <p class="muted">Prefer to talk now? Call or text <span class="tbd">(801) 000-0000</span>, <span class="tbd">Mon to Fri, 8 to 5</span>.</p>
+        <aside class="note"><strong>Speed to lead:</strong> "usually the same day" is only true if Anna gets an instant text alert. That's a process decision, not a design one.</aside>
+      </div>
+      <div data-form-slot="home"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== PROGRAM PAGE ===================== -->
+<main id="view-programs" data-view="programs" hidden>
+  <section class="hero">
+    <div class="wrap stack-lg">
+      <p class="crumb"><a href="#home">Home</a> / Programs / Class A CDL</p>
+      <div class="hero-grid">
+        <div class="stack-lg">
+          <h1>Class A CDL</h1>
+          <p class="lede">The license for tractor-trailers, and the one most trucking jobs ask for. Classroom, range and road training on the yard in Lindon, ending with your state skills test in the same truck.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#apply">Request info</a>
+            <a class="btn btn-quiet" href="#route">See the steps</a>
+          </div>
+        </div>
+        <figure class="ph" style="margin:0">
+          <figcaption><b>Shot 12.</b> Student backing a trailer into the range, instructor watching from the side.</figcaption>
+        </figure>
+      </div>
+      <dl class="spec">
+        <div><dt>Tuition</dt><dd><span class="tbd">$X,XXX</span></dd></div>
+        <div><dt>Length</dt><dd><span class="tbd">X weeks</span></dd></div>
+        <div><dt>Schedule</dt><dd><span class="tbd">Days or evenings</span></dd></div>
+        <div><dt>Next start</dt><dd><span class="tbd">Jan 5</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="route" style="background:var(--surface); border-block:1px solid var(--line)" aria-labelledby="route-h">
+    <div class="wrap stack">
+      <h2 id="route-h">Your route to a CDL</h2>
+      <p class="lede">Seven stops from your first call to your first paycheck.</p>
+      <aside class="note"><strong>Route timeline</strong> (from Direction A): highway mile markers are the only place the green sign color appears. Durations and costs per stop come from the client.</aside>
+      <div class="route">
+        <ol>
+          <li><div class="marker"><small>MILE</small><b>1</b></div><div><h3>Apply</h3><p>Call or fill out the form. We confirm your start date.</p><p class="dur"><span class="tbd">Day 1</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>2</b></div><div><h3>DOT physical</h3><p>A short medical exam and drug screen.</p><p class="dur"><span class="tbd">Week 1</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>3</b></div><div><h3>Learner's permit</h3><p>Pass the knowledge test at the Utah DLD.</p><p class="dur"><span class="tbd">Week 1</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>4</b></div><div><h3>Classroom</h3><p>The federal entry-level theory course.</p><p class="dur"><span class="tbd">X hours</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>5</b></div><div><h3>Range</h3><p>Pre-trip, coupling and backing on the yard.</p><p class="dur"><span class="tbd">X hours</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>6</b></div><div><h3>Road</h3><p>City, highway and mountain grades with an instructor.</p><p class="dur"><span class="tbd">X hours</span></p></div></li>
+          <li><div class="marker"><small>MILE</small><b>7</b></div><div><h3>Skills test</h3><p>Test in the truck you trained in, then start applying.</p><p class="dur"><span class="tbd">Week X</span></p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="sched-h">
+    <div class="wrap stack-lg">
+      <h2 id="sched-h">Upcoming classes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Starts</th><th scope="col">Schedule</th><th scope="col">Hours</th><th scope="col">Seats left</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tbd">Mon, Jan 5</span></td><td>Day</td><td><span class="tbd">8 am to 4 pm</span></td><td><span class="tbd">3</span></td></tr>
+            <tr><td><span class="tbd">Mon, Jan 12</span></td><td>Evening</td><td><span class="tbd">5 to 9 pm</span></td><td><span class="tbd">5</span></td></tr>
+            <tr><td><span class="tbd">Mon, Feb 2</span></td><td>Day</td><td><span class="tbd">8 am to 4 pm</span></td><td><span class="tbd">6</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="note"><strong>Note:</strong> Dates live in one file so they can be updated in a minute. Show "Seats left" only if the client will keep it accurate.</aside>
+      <div class="two">
+        <div class="stack">
+          <h3>To enroll you need</h3>
+          <ul class="checks">
+            <li>To be 18 or older (21 to drive across state lines)</li>
+            <li>A valid driver license <span class="tbd">held X year</span></li>
+            <li>To pass a DOT physical and drug screen</li>
+          </ul>
+        </div>
+        <div class="stack">
+          <h3>Ready to talk?</h3>
+          <p class="muted">Ask about the next class and someone from the school will call you back.</p>
+          <div class="cta-row"><a class="btn btn-primary" href="#apply">Request info</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== REQUEST INFO PAGE ===================== -->
+<main id="view-apply" data-view="apply" hidden>
+  <section class="form-band" style="border-top:0">
+    <div class="wrap form-grid">
+      <div class="stack-lg">
+        <h1>Ask about the next class</h1>
+        <p class="lede">Takes a minute. Someone from the school will call you, usually the same day.</p>
+        <div class="stack">
+          <h3>What happens next</h3>
+          <ol class="next-steps">
+            <li>We call to answer your questions and check you meet the basics.</li>
+            <li>You pick a start date and hold your seat with a deposit <span class="tbd">optional</span>.</li>
+            <li>We help you book your DOT physical and permit test.</li>
+          </ol>
+        </div>
+        <aside class="note"><strong>Backend-agnostic form.</strong> Same fields whether leads go to GoHighLevel or a simple email-and-sheet setup. Hidden fields (not shown) capture the ad, search or referral that sent each visitor: utm_source, utm_medium, utm_campaign, gclid, fbclid, landing page and referrer.</aside>
+      </div>
+      <div data-form-slot="apply"></div>
+    </div>
+  </section>
+</main>
+
+<template id="lead-form">
+  <form class="lead-form" novalidate>
+    <div class="row2">
+      <div class="field"><label for="f-name-SLOT">Full name</label><input id="f-name-SLOT" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="f-phone-SLOT">Mobile phone</label><input id="f-phone-SLOT" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+    </div>
+    <div class="field"><label for="f-email-SLOT">Email</label><input id="f-email-SLOT" name="email" type="email" autocomplete="email"></div>
+    <div class="row2">
+      <div class="field"><label for="f-prog-SLOT">Program</label>
+        <select id="f-prog-SLOT" name="program"><option>Class A CDL</option><option>Class B CDL</option><option>Refresher</option><option>Endorsements</option><option>Not sure yet</option></select>
+      </div>
+      <div class="field"><label for="f-when-SLOT">When could you start?</label>
+        <select id="f-when-SLOT" name="start"><option>As soon as possible</option><option>In the next month</option><option>In 1 to 3 months</option><option>Just researching</option></select>
+      </div>
+    </div>
+    <div class="field"><label for="f-heard-SLOT">How did you hear about us?</label>
+      <select id="f-heard-SLOT" name="heard"><option value="">Choose one</option><option>Google search</option><option>Facebook or Instagram</option><option>Indeed or a job board</option><option>Friend or family</option><option>Workforce Services</option><option>Other</option></select>
+    </div>
+    <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="gclid"><input type="hidden" name="fbclid"><input type="hidden" name="landing_page"><input type="hidden" name="referrer">
+    <label class="consent" for="f-sms-SLOT"><input type="checkbox" id="f-sms-SLOT" name="sms_ok"> <span>Text me about classes and my application. Message and data rates may apply. Reply STOP to opt out. <span class="tbd">legal review</span></span></label>
+    <div><button class="btn btn-primary" type="submit">Send my info</button></div>
+    <p class="form-msg muted" aria-live="polite"></p>
+  </form>
+</template>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="stack">
+      <h3>Centennial CDL</h3>
+      <p><span class="tbd">Street address</span>, Lindon, UT <span class="tbd">84042</span></p>
+      <p><span class="tbd">(801) 000-0000</span></p>
+      <p><span class="tbd">FMCSA Training Provider Registry ID</span></p>
+    </div>
+    <div class="stack">
+      <h3>Programs</h3>
+      <p><a href="#programs">Class A CDL</a><br>Class B CDL<br>Refresher<br>Endorsements</p>
+    </div>
+    <div class="stack">
+      <h3>School</h3>
+      <p>Instructors<br>Cost and funding<br>FAQ<br>Privacy policy<br>Refund policy</p>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="btn btn-quiet" href="#request">Call or text</a>
+  <a class="btn btn-primary" href="#apply">Request info</a>
+</div>
+
+<script>
+(function () {
+  // Notes toggle (remembered per viewer when storage is available)
+  var toggle = document.getElementById('notes-toggle');
+  function setNotes(on) { document.body.classList.toggle('notes-off', !on); toggle.checked = on; }
+  try { var saved = localStorage.getItem('wf-notes'); if (saved === 'off') setNotes(false); } catch (e) {}
+  toggle.addEventListener('change', function () {
+    setNotes(toggle.checked);
+    try { localStorage.setItem('wf-notes', toggle.checked ? 'on' : 'off'); } catch (e) {}
+  });
+
+  // Lead form, cloned into each slot. Wireframe only: nothing is sent anywhere.
+  var tpl = document.getElementById('lead-form').innerHTML;
+  document.querySelectorAll('[data-form-slot]').forEach(function (slot) {
+    slot.innerHTML = tpl.replace(/SLOT/g, slot.getAttribute('data-form-slot'));
+    var form = slot.querySelector('form');
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var msg = form.querySelector('.form-msg');
+      var name = form.querySelector('[name=name]');
+      var phone = form.querySelector('[name=phone]');
+      if (!name.value.trim() || phone.value.replace(/\D/g, '').length < 10) {
+        msg.textContent = 'Add your name and a 10-digit phone number so we can call you.';
+        (name.value.trim() ? phone : name).focus();
+        return;
+      }
+      var done = document.createElement('div');
+      done.className = 'form-done';
+      done.innerHTML = '<h3>Got it. We’ll call you soon.</h3><p class="muted">Wireframe preview: this form doesn’t send anything yet.</p>';
+      form.replaceWith(done);
+    });
+  });
+
+  // Hash routing between the three wireframe pages; other hashes scroll within a page
+  var views = { home: 'view-home', programs: 'view-programs', apply: 'view-apply' };
+  function show(viewName) {
+    Object.keys(views).forEach(function (k) { document.getElementById(views[k]).hidden = (k !== viewName); });
+    document.querySelectorAll('[data-nav]').forEach(function (a) {
+      if (a.getAttribute('data-nav') === viewName) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+  function route() {
+    var h = (location.hash || '#home').slice(1);
+    if (views[h]) { show(h); window.scrollTo(0, 0); return; }
+    var el = document.getElementById(h);
+    if (el) {
+      var v = el.closest('[data-view]');
+      if (v) show(v.getAttribute('data-view'));
+      el.scrollIntoView();
+    } else { show('home'); }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  // Walkaround: the sticky frame follows the step nearest the middle of the screen
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.walk-step'));
+  var cap = document.getElementById('walk-cap');
+  var meter = Array.prototype.slice.call(document.querySelectorAll('#walk-meter i'));
+  function setStep(i) {
+    steps.forEach(function (s, j) { s.classList.toggle('is-current', j === i); });
+    meter.forEach(function (m, j) { m.classList.toggle('on', j <= i); });
+    cap.innerHTML = '<b>Frame ' + (i + 1) + ' of ' + steps.length + '.</b> ' + steps[i].getAttribute('data-cap');
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setStep(steps.indexOf(e.target)); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    steps.forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
